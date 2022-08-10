@@ -51,6 +51,11 @@ describe('tests the user and auth', () => {
     expect(res.status).toEqual(200);
   });
 
+  it('tests if a user is authenticated', async () => {
+    const res = await request(app).get('/api/v1/users/me');
+    expect(res.status).toEqual(401);
+  });
+
 
 
   afterAll(() => {
