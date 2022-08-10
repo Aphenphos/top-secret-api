@@ -62,6 +62,13 @@ describe('tests the user and auth', () => {
     expect(res.status).toEqual(401);
   });
 
+  it('DELETE /sessions deletes the user session', async () => {
+    const [agent] = await logIn();
+    const resp = await agent.delete('/api/v1/users/sessions');
+    expect(resp.status).toBe(204);
+  });
+
+
   afterAll(() => {
     pool.end();
   });
