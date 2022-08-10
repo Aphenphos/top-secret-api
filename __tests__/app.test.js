@@ -56,7 +56,11 @@ describe('tests the user and auth', () => {
     expect(res.status).toEqual(401);
   });
 
-
+  it('tests if user is or is not an admin', async () => {
+    const [agent] = await logIn();
+    const res = await agent.get('/api/v1/users');
+    expect(res.status).toEqual(401);
+  });
 
   afterAll(() => {
     pool.end();
