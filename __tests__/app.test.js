@@ -12,6 +12,19 @@ const fakeUser = {
   password: 'imtheman'
 };
 
+const logIn = async (userInfo = {}) => {
+  const password = userInfo.password ?? fakeUser.password;
+
+  const agent = request.agent(app);
+
+  const user = await UserService.create({ ...fakeUser, ...userInfo });
+
+  const { email } = user;
+  await agent.post('/api/v1/users/sessions').send({ email, password });
+  return [agent, user];
+};
+
+
 describe('tests the user and auth', () => {
   beforeEach(() => {
     return setup(pool);
@@ -29,6 +42,15 @@ describe('tests the user and auth', () => {
       email
     });
   });
+
+  it('returns existing in user', async () => {
+    await request(app).post('/api/v1/users').send(fakeUser);
+    const res = await request(app)
+      .post('/api/v1/users/sessions')
+      .send({ email: 'mrman@man.com', password: 'imtheman' });
+    expect(res.status).toEqual(200);
+  });
+
 
 
   afterAll(() => {
