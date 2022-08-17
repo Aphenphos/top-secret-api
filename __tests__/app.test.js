@@ -20,7 +20,6 @@ const logIn = async (userInfo = {}) => {
   const user = await UserService.create({ ...fakeUser });
 
   const { email } = user;
-  console.log(email);
   await agent.post('/api/v1/users/sessions').send({ email, password });
   return [agent, user];
 };
@@ -80,7 +79,6 @@ describe('tests the user and auth', () => {
 
   it('should make sure secrets are got properly', async () => {
     const [agent, user] = await logIn();
-    console.log(user);
     const resp = await agent.get('/api/v1/secrets');
   
     expect(resp.body).toEqual([{
